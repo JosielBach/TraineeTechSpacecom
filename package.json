@@ -1,0 +1,6 @@
+{
+  "name": "trainee-tech-spacecom",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Detecção de encontros entre monitorados a partir de dados de geolocalização"
+}
