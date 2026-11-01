@@ -1,5 +1,4 @@
 node_modules/
-saida/
 datasets/*
 !datasets/.gitkeep
 respostas/*
