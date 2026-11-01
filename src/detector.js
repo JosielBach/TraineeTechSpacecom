@@ -1,6 +1,7 @@
 const { calcularDistanciaEmMetros } = require('./haversine');
 
 const DISTANCIA_LIMITE_METROS = 20;
+const DIFERENCA_MAXIMA_LATITUDE_GRAUS = 0.00018;
 
 function classificarEncontro(posicao1, posicao2) {
   if (posicao1.idsAgressores.includes(posicao2.id) || posicao2.idsAgressores.includes(posicao1.id)) return 'protetiva';
@@ -15,6 +16,8 @@ function detectarEncontros(timestamp, posicoes) {
     for (let j = i + 1; j < posicoes.length; j++) {
       const posicao1 = posicoes[i];
       const posicao2 = posicoes[j];
+      if (Math.abs(posicao1.latitude - posicao2.latitude) > DIFERENCA_MAXIMA_LATITUDE_GRAUS) continue;
+
       const distanciaMetros = calcularDistanciaEmMetros(
         posicao1.latitude,
         posicao1.longitude,
