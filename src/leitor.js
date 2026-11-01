@@ -1,14 +1,20 @@
 const fs = require('fs');
+const readline = require('readline');
 
-function lerPosicoesPorTimestamp(caminhoArquivo) {
-  const linhas = fs.readFileSync(caminhoArquivo, 'utf8').split(/\r?\n/);
-  const posicoesPorTimestamp = new Map();
+async function* lerPosicoesPorTimestamp(caminhoArquivo) {
+  const linhas = readline.createInterface({ input: fs.createReadStream(caminhoArquivo), crlfDelay: Infinity });
+  let ehCabecalho = true;
+  let timestampAtual = null;
+  let posicoesDoTimestamp = [];
 
-  for (let indiceLinha = 1; indiceLinha < linhas.length; indiceLinha++) {
-    if (linhas[indiceLinha] === '') continue;
+  for await (const linha of linhas) {
+    if (ehCabecalho) {
+      ehCabecalho = false;
+      continue;
+    }
+    if (linha === '') continue;
 
-    const [id, faccao, timestampComAspas, latitude, longitude, medidaProtetiva, idsRestricao] =
-      linhas[indiceLinha].split(';');
+    const [id, faccao, timestampComAspas, latitude, longitude, medidaProtetiva, idsRestricao] = linha.split(';');
     const posicao = {
       id: Number(id),
       faccao,
@@ -19,12 +25,15 @@ function lerPosicoesPorTimestamp(caminhoArquivo) {
     };
 
     const timestamp = timestampComAspas.replaceAll('"', '');
-    const posicoesDoTimestamp = posicoesPorTimestamp.get(timestamp);
-    if (posicoesDoTimestamp) posicoesDoTimestamp.push(posicao);
-    else posicoesPorTimestamp.set(timestamp, [posicao]);
+    if (timestamp !== timestampAtual) {
+      if (timestampAtual !== null) yield [timestampAtual, posicoesDoTimestamp];
+      timestampAtual = timestamp;
+      posicoesDoTimestamp = [];
+    }
+    posicoesDoTimestamp.push(posicao);
   }
 
-  return posicoesPorTimestamp;
+  if (timestampAtual !== null) yield [timestampAtual, posicoesDoTimestamp];
 }
 
 module.exports = { lerPosicoesPorTimestamp };
