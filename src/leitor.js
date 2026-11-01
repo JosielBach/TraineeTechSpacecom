@@ -24,16 +24,15 @@ async function* lerPosicoesPorTimestamp(caminhoArquivo) {
       idsAgressores: idsRestricao ? idsRestricao.replaceAll('"', '').split(',').map(Number) : [],
     };
 
-    const timestamp = timestampComAspas.replaceAll('"', '');
-    if (timestamp !== timestampAtual) {
-      if (timestampAtual !== null) yield [timestampAtual, posicoesDoTimestamp];
-      timestampAtual = timestamp;
+    if (timestampComAspas !== timestampAtual) {
+      if (timestampAtual !== null) yield [timestampAtual.replaceAll('"', ''), posicoesDoTimestamp];
+      timestampAtual = timestampComAspas;
       posicoesDoTimestamp = [];
     }
     posicoesDoTimestamp.push(posicao);
   }
 
-  if (timestampAtual !== null) yield [timestampAtual, posicoesDoTimestamp];
+  if (timestampAtual !== null) yield [timestampAtual.replaceAll('"', ''), posicoesDoTimestamp];
 }
 
 module.exports = { lerPosicoesPorTimestamp };
