@@ -52,5 +52,6 @@ O validador mostra os encontros corretos, os que estão faltando e os que estão
 ## Decisões
 
 - **Leitura em streaming:** permite processar arquivos grandes sem carregá-los inteiros na memória. Depende de os datasets estarem ordenados por timestamp.
+- **Leitura manual dos bytes:** o arquivo é lido em pedaços de 1 MB, e os campos são convertidos direto dos bytes, sem `readline` nem `split`. Nos datasets 3 a 7, o tempo total caiu de cerca de 37 s para 16 s. Depende do formato definido no enunciado: coordenadas em notação científica, por exemplo, não são suportadas.
 - **Filtro por latitude:** pares com mais de 0,00018° de diferença de latitude (cerca de 20,015 m) não podem ser um encontro, então não passam pelo cálculo de Haversine.
 - **Um registro por par:** cada par gera um único encontro por timestamp, com o tipo mais específico, como nas respostas de exemplo.
