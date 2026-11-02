@@ -3,3 +3,4 @@ datasets/*
 !datasets/.gitkeep
 respostas/*
 !respostas/.gitkeep
+!respostas/dataset*.json
