@@ -23,7 +23,7 @@ Cada encontro é classificado como:
 
 ## Como rodar
 
-Os datasets não estão no repositório, por causa do tamanho. Baixe os arquivos `dataset1.txt` a `dataset7.txt` de `https://bucket-projeto-trainee.s3.sa-east-1.amazonaws.com/`, coloque-os na pasta `datasets/` e, na raiz do projeto, rode:
+Os datasets não estão no repositório, por causa do tamanho. Adicione os arquivos `dataset1.txt` a `dataset7.txt`, coloque-os na pasta `datasets/` e, na raiz do projeto, rode:
 
 ```bash
 node src/index.js datasets/dataset1.txt
